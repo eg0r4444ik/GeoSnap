@@ -11,7 +11,7 @@ public class Zone {
     private Point rightBottom;
 
     public Zone(String leftTopCoords, String rightBottomCoords) {
-        this.leftTop = new Point(service.geocentricToCartesian(service.strToGeocentric(leftTopCoords)));
-        this.rightBottom = new Point(service.geocentricToCartesian(service.strToGeocentric(rightBottomCoords)));
+        this.leftTop = new Point(service.geocentricToCartesian(leftTopCoords));
+        this.rightBottom = new Point(service.geocentricToCartesian(rightBottomCoords));
     }
 }

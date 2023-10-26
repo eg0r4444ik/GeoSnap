@@ -1,4 +1,4 @@
-package com.korotkov.hackathon.dto;
+package com.korotkov.hackathon.dto.response;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

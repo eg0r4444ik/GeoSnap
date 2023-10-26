@@ -1,8 +1,8 @@
 package com.korotkov.hackathon.rest;
 
-import com.korotkov.hackathon.dto.AuthRequestDto;
-import com.korotkov.hackathon.dto.AuthResponseDto;
-import com.korotkov.hackathon.dto.UserDto;
+import com.korotkov.hackathon.dto.request.AuthRequestDto;
+import com.korotkov.hackathon.dto.response.AuthResponseDto;
+import com.korotkov.hackathon.dto.request.UserDto;
 import com.korotkov.hackathon.entity.UserEntity;
 import com.korotkov.hackathon.security.CustomPrincipal;
 import com.korotkov.hackathon.security.SecurityService;

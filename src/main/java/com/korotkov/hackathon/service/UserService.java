@@ -1,6 +1,7 @@
 package com.korotkov.hackathon.service;
 
 import com.korotkov.hackathon.entity.UserEntity;
+import com.korotkov.hackathon.entity.UserRole;
 import com.korotkov.hackathon.repository.UserRepository;
 import com.korotkov.hackathon.security.CustomPrincipal;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +24,9 @@ public class UserService {
                 user.toBuilder()
                         .password(passwordEncoder.encode(user.getPassword()))
                         .enabled(true)
-
+                        .username(user.getUsername())
+                        .role(UserRole.USER)
                         .build()
-                //                .role(UserRole.USER)
                 //                .createdAt(LocalDateTime.now())
                 //                .updatedAt(LocalDateTime.now())
         ).doOnSuccess(u -> {

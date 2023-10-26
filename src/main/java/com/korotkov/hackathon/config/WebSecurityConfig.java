@@ -35,6 +35,8 @@ public class WebSecurityConfig {
                         .permitAll()
                         .pathMatchers(publicRoutes)
                         .permitAll()
+                        .pathMatchers("/admin/**")
+                        .hasRole("ADMIN")
                         .anyExchange()
                         .authenticated())
                 .exceptionHandling(exceptionHandlingSpec -> exceptionHandlingSpec

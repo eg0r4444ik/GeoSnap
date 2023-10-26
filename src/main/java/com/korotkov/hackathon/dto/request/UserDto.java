@@ -1,4 +1,4 @@
-package com.korotkov.hackathon.dto;
+package com.korotkov.hackathon.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -12,7 +12,7 @@ public class UserDto {
     private String username;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    private String name;
-    private String surname;
-    private boolean enabled;
+//    private String name;
+//    private String surname;
+//    private boolean enabled;
 }

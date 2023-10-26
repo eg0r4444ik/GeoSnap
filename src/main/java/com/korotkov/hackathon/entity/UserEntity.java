@@ -14,8 +14,7 @@ public class UserEntity {
     private Long id;
     private String username;
     private String password;
-    private String name;
-    private String surname;
+    private UserRole role;
     private boolean enabled;
 
 

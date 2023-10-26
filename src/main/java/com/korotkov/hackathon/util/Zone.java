@@ -1,6 +1,7 @@
 package com.korotkov.hackathon.util;
 
 import com.korotkov.hackathon.service.CoordsService;
+import com.korotkov.hackathon.util.coordinatesUtil.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class Zone {

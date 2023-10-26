@@ -1,4 +1,4 @@
-package com.korotkov.hackathon.util;
+package com.korotkov.hackathon.util.coordinatesUtil;
 
 public class GeocentricCoordinates {
 

@@ -1,23 +1,23 @@
-package com.korotkov.hackathon.util;
+package com.korotkov.hackathon.util.coordinatesUtil;
 
-public class Latitude {
+public class Longitude {
 
-    public enum LatitudeType{
-        N,
-        S
+    public enum LongitudeType{
+        E,
+        W
     }
 
-    private LatitudeType type;
+    private LongitudeType type;
     private double degree, minute, second;
 
-    public Latitude(LatitudeType type, double degree, double minute, double second) {
+    public Longitude(LongitudeType type, double degree, double minute, double second) {
         this.type = type;
         this.degree = degree;
         this.minute = minute;
         this.second = second;
     }
 
-    public LatitudeType getType() {
+    public LongitudeType getType() {
         return type;
     }
 

@@ -18,7 +18,7 @@ public class SatelliteEntity {
 
     @Column(value = "orbit_period")
 
-    double orbitPeriod;
+    long orbitPeriod;
 
     @Column(value = "earth_to_orbit_angle")
 
@@ -34,7 +34,7 @@ public class SatelliteEntity {
 
     @Column(value = "time_start")
 
-    double timeStart;
+    long timeStart;
 
 
 }

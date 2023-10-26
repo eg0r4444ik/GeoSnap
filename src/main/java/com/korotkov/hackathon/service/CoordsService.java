@@ -1,10 +1,9 @@
 package com.korotkov.hackathon.service;
 
-import com.korotkov.hackathon.util.CartesianCoordinates;
-import com.korotkov.hackathon.util.GeocentricCoordinates;
-import com.korotkov.hackathon.util.Latitude;
-import com.korotkov.hackathon.util.Longitude;
-import org.springframework.security.core.parameters.P;
+import com.korotkov.hackathon.util.coordinatesUtil.CartesianCoordinates;
+import com.korotkov.hackathon.util.coordinatesUtil.GeocentricCoordinates;
+import com.korotkov.hackathon.util.coordinatesUtil.Latitude;
+import com.korotkov.hackathon.util.coordinatesUtil.Longitude;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;

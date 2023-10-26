@@ -7,11 +7,12 @@ public class Zone {
 
     @Autowired
     CoordsService service;
-    private Point leftTop;
-    private Point rightBottom;
+    private Point leftTop, leftBottom, rightTop, rightBottom;
 
-    public Zone(String leftTopCoords, String rightBottomCoords) {
+    public Zone(String leftTopCoords, String leftBottomCoords, String rightTopCoords, String rightBottomCoords) {
         this.leftTop = new Point(service.geocentricToCartesian(leftTopCoords));
+        this.leftBottom = new Point(service.geocentricToCartesian(leftBottomCoords));
+        this.rightTop = new Point(service.geocentricToCartesian(rightTopCoords));
         this.rightBottom = new Point(service.geocentricToCartesian(rightBottomCoords));
     }
 }

@@ -2,7 +2,9 @@ package com.korotkov.hackathon.util.coordinatesUtil;
 
 public class CartesianCoordinates {
 
-    private double x, y, z;
+    private final double x;
+    private double y;
+    private double z;
 
     public CartesianCoordinates(double x, double y, double z) {
         this.x = x;

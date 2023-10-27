@@ -3,13 +3,13 @@ server:
 
 spring:
   r2dbc:
-    url: r2dbc:pool:postgres://localhost:5432/snafu_db
+    url: r2dbc:pool:postgres://${DB_IP}:5432/snafu_db
     username: postgres
     password: postgres
-  rsocket:
-    server:
-      transport: tcp
-      port: 7001
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
 jwt:
   password:
     encoder:

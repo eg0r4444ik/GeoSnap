@@ -204,8 +204,17 @@ public class SatellitesService {
         return result;
     }
 
+    public boolean canSatellitesCrush(SatelliteEntity satellite){
+        Flux<SatelliteEntity> satellites = getSatellites();
+        for(SatelliteEntity sat : satellites.toIterable()){
+            if(sat.getDistanceToEarth() == satellite.getDistanceToEarth() &&
+            sat.getOrbitPeriod() != satellite.getOrbitPeriod()){
+                return true;
+            }
+        }
 
+        return false;
+    }
 
-    // TODO Посмотреть не столкнуться ли спутники
     // TODO Учесть вращение земли вокруг своей оси
 }

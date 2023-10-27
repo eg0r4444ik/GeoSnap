@@ -50,4 +50,6 @@ public class UserService {
     public Flux<UserEntity> getAllUsers() {
         return userRepository.findAll();
     }
+
+
 }

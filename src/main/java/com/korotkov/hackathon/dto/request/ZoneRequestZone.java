@@ -6,15 +6,9 @@ import lombok.Data;
 
 @Data
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class SatelliteRequestDto {
-
-    double orbitPeriod;
-
-    double earthToOrbitAngle;
-
-    double distanceToEarth;
-
-    double viewAngle;
-
-    double timeStart;
+public class ZoneRequestZone {
+    String leftTop;
+    String leftBottom;
+    String rightTop;
+    String rightBottom;
 }

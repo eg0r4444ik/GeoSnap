@@ -2,14 +2,8 @@ package com.korotkov.hackathon.util.coordinatesUtil;
 
 public class Latitude {
 
-    public enum LatitudeType{
-        N,
-        S
-    }
-
     private LatitudeType type;
     private double degree, minute, second;
-
     public Latitude(LatitudeType type, double degree, double minute, double second) {
         this.type = type;
         this.degree = degree;
@@ -31,5 +25,10 @@ public class Latitude {
 
     public double getSecond() {
         return second;
+    }
+
+    public enum LatitudeType {
+        N,
+        S
     }
 }

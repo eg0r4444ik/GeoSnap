@@ -9,7 +9,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,16 +23,16 @@ public class SatellitesController {
     ModelMapper modelMapper;
 
     @GetMapping("/all")
-    public Flux<SatelliteResponseDto> getAllSatellites(){
+    public Flux<SatelliteResponseDto> getAllSatellites() {
         return satellitesService.getSatellites()
                 .map(satelliteEntity ->
                         modelMapper.map(satelliteEntity, SatelliteResponseDto.class));
     }
 
     @PostMapping("/add")
-    public Mono<SatelliteResponseDto> addSatellite(@RequestBody @Valid SatelliteRequestDto satelliteRequestDto){
+    public Mono<SatelliteResponseDto> addSatellite(@RequestBody @Valid SatelliteRequestDto satelliteRequestDto) {
         Mono<SatelliteEntity> newSatellite = satellitesService.save(modelMapper.map(satelliteRequestDto, SatelliteEntity.class));
-        return newSatellite.map(s -> modelMapper.map(s,SatelliteResponseDto.class));
+        return newSatellite.map(s -> modelMapper.map(s, SatelliteResponseDto.class));
     }
 
 }

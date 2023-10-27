@@ -1,7 +1,5 @@
 package com.korotkov.hackathon.util.coordinatesUtil;
 
-import com.korotkov.hackathon.util.coordinatesUtil.CartesianCoordinates;
-
 public class Point {
 
     private CartesianCoordinates coordinates;
@@ -12,5 +10,10 @@ public class Point {
 
     public CartesianCoordinates getCoordinates() {
         return coordinates;
+    }
+
+    @Override
+    public String toString() {
+        return coordinates.toString();
     }
 }

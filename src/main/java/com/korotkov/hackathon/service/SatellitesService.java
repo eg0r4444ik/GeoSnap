@@ -11,8 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.Math.*;
 
@@ -75,6 +74,33 @@ public class SatellitesService {
         return trajectory;
     }
 
+    private List<Point> getSatelliteTrajectoryStartedNow(SatelliteEntity satellite){
+        Point start = defineCoords(satellite);
+        boolean find = false;
+
+        double R = EARTH_RADIUS + satellite.getDistanceToEarth();
+        List<Point> trajectory = new ArrayList<>();
+        double border = 2*PI;
+        for(double alpha = 0; alpha <= border; alpha += 0.01){
+            Point point = new Point(new CartesianCoordinates(R * cos(satellite.getEarthToOrbitAngle()) * cos(alpha),
+                    R * sin(satellite.getEarthToOrbitAngle()) * cos(alpha),
+                    R * sin(alpha)));
+
+            if(Math.abs(start.getCoordinates().getX()-point.getCoordinates().getX()) < 10e-6 &&
+                    Math.abs(start.getCoordinates().getY()-point.getCoordinates().getY()) < 10e-6 &&
+                    Math.abs(start.getCoordinates().getZ()-point.getCoordinates().getZ()) < 10e-6){
+                find = true;
+                border += 2*PI;
+            }
+
+            if(find){
+                trajectory.add(point);
+            }
+        }
+
+        return trajectory;
+    }
+
     private double getAngleBetweenVectors(Point common, Point normal, Point checkPoint){
         double x1 = checkPoint.getCoordinates().getX() - common.getCoordinates().getX();
         double y1 = checkPoint.getCoordinates().getY() - common.getCoordinates().getY();
@@ -116,6 +142,70 @@ public class SatellitesService {
         return leftTop && leftBottom && rightTop && rightBottom;
     }
 
+    public List<SatelliteEntity> getSortedSatellites(Zone zone, List<SatelliteEntity> satellites){
+        List<SatelliteEntity> result = new ArrayList<>();
+        for(SatelliteEntity satellite : satellites){
+            if(doesSatelliteCoverArea(zone, satellite)){
+                result.add(satellite);
+            }
+        }
 
+        Collections.sort(result, (s1, s2) -> (int)(getTimeForOrder(zone, s1)-getTimeForOrder(zone, s2)));
+        return result;
+    }
+
+    private Point getLastZonePoint(Zone zone, SatelliteEntity satellite){
+        boolean leftTop = false;
+        boolean leftBottom = false;
+        boolean rightTop = false;
+        boolean rightBottom = false;
+
+        double R = EARTH_RADIUS+satellite.getDistanceToEarth();
+
+        for(Point point : getSatelliteTrajectory(satellite)){
+            Point normal = new Point(new CartesianCoordinates(point.getCoordinates().getX()*EARTH_RADIUS/R,
+                    point.getCoordinates().getY()*EARTH_RADIUS/R,
+                    point.getCoordinates().getZ()*EARTH_RADIUS/R));
+
+            if(Math.abs(getAngleBetweenVectors(point, normal, zone.getLeftTop()) - satellite.getViewAngle()) < 10e-6){
+                leftTop = true;
+                if(leftBottom && rightTop && rightBottom){
+                    return point;
+                }
+            }
+            if(Math.abs(getAngleBetweenVectors(point, normal, zone.getLeftBottom()) - satellite.getViewAngle()) < 10e-6){
+                leftBottom = true;
+                if(leftTop && rightTop && rightBottom){
+                    return point;
+                }
+            }
+            if(Math.abs(getAngleBetweenVectors(point, normal, zone.getRightTop()) - satellite.getViewAngle()) < 10e-6){
+                rightTop = true;
+                if(leftTop && leftBottom && rightBottom){
+                    return point;
+                }
+            }
+            if(Math.abs(getAngleBetweenVectors(point, normal, zone.getRightBottom()) - satellite.getViewAngle()) < 10e-6){
+                rightBottom = true;
+                if(leftTop && leftBottom && rightTop){
+                    return point;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public long getTimeForOrder(Zone zone, SatelliteEntity satellite){
+        Point lastPoint = getLastZonePoint(zone, satellite);
+        double alpha = getAngleBetweenVectors(new Point(new CartesianCoordinates(0, 0, 0)),
+                lastPoint, defineCoords(satellite));
+        long result = (long)Math.ceil(satellite.getOrbitPeriod()*alpha/(2*PI));
+        return result;
+    }
+
+
+
+    // TODO Посмотреть не столкнуться ли спутники
     // TODO Учесть вращение земли вокруг своей оси
 }

@@ -1,0 +1,31 @@
+services:
+  app:
+    image: snafu-geo-snap:1.0.0
+    env_file:
+      - .env
+    restart: always
+    #    environment:
+    #      - JAVA_OPTS='-XX:+UseSerialGC'
+    #      JAVA_OPTS:
+    #        -XX:+UseSerialGC
+    #        -Xss512k
+    #        -XX:MaxRAM=72m
+    #java -XX:+UseSerialGC -Xss512k -XX:MaxRAM=72m
+    ports:
+      - "8083:8083"
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+  snafu:
+    image: postgres
+#    env_file:
+#      - db.env
+    #    restart: always
+    ports:
+      - "5422:5432"
+    environment:
+
+      POSTGRES_PASSWORD: my_qwerty_123_password
+
+

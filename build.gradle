@@ -3,7 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.1.5'
     id 'io.spring.dependency-management' version '1.1.3'
 }
-
+apply plugin: 'idea'
 group = 'com.korotkov'
 version = '0.0.1-SNAPSHOT'
 
@@ -43,4 +43,19 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+//jar {
+//
+//    manifest {
+//        attributes 'Main-Class': 'com.korotkov.hackathon.HackathonApplication',
+//                'Class-Path': configurations.runtime.files.collect { "lib/$it.name" }.join(' '),
+//                'Implementation-Version': project.version
+//    }
+//
+//    from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {}
+//}
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.korotkov.hackathon.HackathonApplication'
+    }
 }

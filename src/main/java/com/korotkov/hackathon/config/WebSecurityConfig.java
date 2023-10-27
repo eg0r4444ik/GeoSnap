@@ -30,15 +30,16 @@ public class WebSecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http, AuthenticationManager authenticationManager) {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .authorizeExchange(exchangeSpec -> exchangeSpec
-                        .pathMatchers(HttpMethod.OPTIONS)
-                        .permitAll()
-                        .pathMatchers(publicRoutes)
-                        .permitAll()
-                        .pathMatchers("/admin/**")
-                        .hasRole("ADMIN")
-                        .anyExchange()
-                        .authenticated())
+                .cors(ServerHttpSecurity.CorsSpec::disable)
+//                .authorizeExchange(exchangeSpec -> exchangeSpec
+////                        .pathMatchers(HttpMethod.OPTIONS)
+////                        .permitAll()
+////                        .pathMatchers(publicRoutes)
+////                        .permitAll()
+////                        .pathMatchers("/admin/**")
+////                        .hasRole("ADMIN")
+//                        .anyExchange()
+//                        .authenticated())
                 .exceptionHandling(exceptionHandlingSpec -> exceptionHandlingSpec
                         .authenticationEntryPoint((swe, e) -> {
                             log.error("IN securityWebFilterChain - unauthorized error: {}", e.getMessage());
@@ -48,7 +49,7 @@ public class WebSecurityConfig {
 
                             return Mono.fromRunnable(() -> swe.getResponse().setStatusCode(HttpStatus.FORBIDDEN));
                         }))
-                .addFilterAt(bearerAuthenticationFilter(authenticationManager), SecurityWebFiltersOrder.AUTHENTICATION)
+//                .addFilterAt(bearerAuthenticationFilter(authenticationManager), SecurityWebFiltersOrder.AUTHENTICATION)
                 .build();
     }
 

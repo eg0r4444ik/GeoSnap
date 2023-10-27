@@ -1,5 +1,6 @@
 package com.korotkov.hackathon.service;
 
+import com.korotkov.hackathon.entity.SatelliteEntity;
 import com.korotkov.hackathon.entity.UserEntity;
 import com.korotkov.hackathon.entity.UserRole;
 import com.korotkov.hackathon.repository.UserRepository;
@@ -20,6 +21,13 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public Mono<UserEntity> registerUser(UserEntity user) {
+        SatelliteEntity build = SatelliteEntity.builder()
+                .distanceToEarth(23)
+                .orbitPeriod(23)
+                .earthToOrbitAngle(23)
+                .build();
+
+
         return userRepository.save(
                 user.toBuilder()
                         .password(passwordEncoder.encode(user.getPassword()))

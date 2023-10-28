@@ -174,9 +174,14 @@ public class SatellitesService {
 
         double a = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) + (z2-z1)*(z2-z1));
         double b = Math.sqrt((x4-x1)*(x4-x1) + (y4-y1)*(y4-y1) + (z4-z1)*(z4-z1));
-        double s = a*b/10000000000L;
+        double s = a*b;
+        String str = String.valueOf((int)s);
+        String sss = "";
+        for(int i = 0; i < Math.min(3, str.length()); i++){
+            sss += str.charAt(i);
+        }
 
-        return (int)s;
+        return Integer.parseInt(sss);
     }
 
     public Flux<SatelliteOrderResponse> getSortedSatellites(Zone zone, Flux<SatelliteEntity> satellites) {

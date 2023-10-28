@@ -492,7 +492,7 @@ class HackathonApplicationTests {
     }
 
     @Test
-    void notNullTests(){
+    void TrajectoryIsNotNull(){
         List<Point> points = new ArrayList<>(){{
             add(new Point(new CartesianCoordinates(977322, 1638871, 0)));
             add(new Point(new CartesianCoordinates(6212827, 340434, 0)));

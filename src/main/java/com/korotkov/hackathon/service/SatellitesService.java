@@ -155,7 +155,7 @@ public class SatellitesService {
         return leftTop && leftBottom && rightTop && rightBottom;
     }
 
-    private int getPrice(Zone zone){
+    public int getPrice(Zone zone){
         double x1 = zone.getLeftTop().getCoordinates().getX();
         double y1 = zone.getLeftTop().getCoordinates().getY();
         double z1 = zone.getLeftTop().getCoordinates().getZ();
@@ -174,10 +174,9 @@ public class SatellitesService {
 
         double a = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) + (z2-z1)*(z2-z1));
         double b = Math.sqrt((x4-x1)*(x4-x1) + (y4-y1)*(y4-y1) + (z4-z1)*(z4-z1));
-        double s = a*b;
-        int coeff = 1000;
+        double s = a*b/10000000000L;
 
-        return (int)s*coeff;
+        return (int)s;
     }
 
     public Flux<SatelliteOrderResponse> getSortedSatellites(Zone zone, Flux<SatelliteEntity> satellites) {

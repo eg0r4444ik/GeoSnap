@@ -355,6 +355,11 @@ class HackathonApplicationTests {
             assertThat(satellitesService.doesSatelliteCoverArea(goodZones.get(i), satellites.get(i))).isTrue();
             assertThat(satellitesService.getLastZonePoint(goodZones.get(i), satellites.get(i))).isNotNull();
         }
+
+        for(Zone zone : zones) {
+            System.out.println(satellitesService.getPrice(zone));
+            System.out.flush();
+        }
     }
 
     @Test
@@ -488,7 +493,6 @@ class HackathonApplicationTests {
                 assertThat(satellitesService.belongingPointToTrajectory(point, satellite)).isFalse();
             }
         }
-
     }
 
     @Test
@@ -709,6 +713,10 @@ class HackathonApplicationTests {
 
         for(SatelliteEntity satellite : satellites){
             assertThat(satellitesService.getSatelliteTrajectory(satellite)).isNotNull();
+        }
+
+        for(Zone zone : zones) {
+            System.out.println(satellitesService.getPrice(zone));
         }
     }
 }

@@ -48,10 +48,10 @@ public class AuthController {
     }
 
     @GetMapping("/getAllUsers")
-
     public Flux<UserDto> getAllUsers() {
         return userService.getAllUsers().map(userEntity -> modelMapper.map(userEntity, UserDto.class));
     }
+
 
     @GetMapping("/hello")
     public Mono<String> getHello() {

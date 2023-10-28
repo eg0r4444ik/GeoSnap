@@ -14,6 +14,8 @@ public class SatelliteRequestDto {
 
     double viewAngle;
 
+    String name;
+
     int day;
     int hours;
     int minute;

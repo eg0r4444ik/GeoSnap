@@ -19,4 +19,6 @@ public class MapZoneEntity {
     double south;
     double east;
     double west;
+
+    boolean allowed;
 }

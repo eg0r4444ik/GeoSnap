@@ -19,8 +19,8 @@ services:
           memory: 300M
   snafu:
     image: postgres
-#    env_file:
-#      - db.env
+    #    env_file:
+    #      - db.env
     #    restart: always
 
     ports:

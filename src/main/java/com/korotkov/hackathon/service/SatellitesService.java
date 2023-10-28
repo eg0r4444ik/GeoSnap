@@ -68,7 +68,7 @@ public class SatellitesService {
         double x = point.getCoordinates().getX() / (R * cos(satellite.getEarthToOrbitAngle()));
         double y = point.getCoordinates().getY() / (R * sin(satellite.getEarthToOrbitAngle()));
         double z = point.getCoordinates().getZ() / R;
-        if (x == y && abs(x * x + z * z - 1) < 10e-6) {
+        if (Math.abs(x-y) < 10e-6 && abs(x * x + z * z - 1) < 10e-6) {
             return true;
         }
         return false;

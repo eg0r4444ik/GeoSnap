@@ -155,13 +155,38 @@ public class SatellitesService {
         return leftTop && leftBottom && rightTop && rightBottom;
     }
 
+    private int getPrice(Zone zone){
+        double x1 = zone.getLeftTop().getCoordinates().getX();
+        double y1 = zone.getLeftTop().getCoordinates().getY();
+        double z1 = zone.getLeftTop().getCoordinates().getZ();
+
+        double x2 = zone.getRightTop().getCoordinates().getX();
+        double y2 = zone.getRightTop().getCoordinates().getY();
+        double z2 = zone.getRightTop().getCoordinates().getZ();
+
+        double x3 = zone.getRightBottom().getCoordinates().getX();
+        double y3 = zone.getRightBottom().getCoordinates().getY();
+        double z3 = zone.getRightBottom().getCoordinates().getZ();
+
+        double x4 = zone.getLeftBottom().getCoordinates().getX();
+        double y4 = zone.getLeftBottom().getCoordinates().getY();
+        double z4 = zone.getLeftBottom().getCoordinates().getZ();
+
+        double a = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) + (z2-z1)*(z2-z1));
+        double b = Math.sqrt((x4-x1)*(x4-x1) + (y4-y1)*(y4-y1) + (z4-z1)*(z4-z1));
+        double s = a*b;
+        int coeff = 1000;
+
+        return (int)s*coeff;
+    }
+
     public Flux<SatelliteOrderResponse> getSortedSatellites(Zone zone, Flux<SatelliteEntity> satellites) {
         //.filter(d -> doesSatelliteCoverArea(zone,d))
         return satellites
                 .map(satelliteEntity -> SatelliteOrderResponse.builder()
                         .satelliteResponseDto(modelMapper.map(satelliteEntity, SatelliteResponseDto.class))
                         .time(getTimeForOrder(zone, satelliteEntity))
-                        .price(new Random().nextInt(3, 5) * 1000)
+                        .price(getPrice(zone))
                         .build())
                 .sort(Comparator.comparingLong(SatelliteOrderResponse::getTime));
     }

@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Set;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
+import static java.lang.Math.*;
 
 @Service
 public class CoordsService {
@@ -20,8 +19,8 @@ public class CoordsService {
 
     public CartesianCoordinates geocentricToCartesian(String coords) {
         String[] coordinates = coords.split(" ");
-        double latitude = Double.parseDouble(coordinates[0]);
-        double longitude = Double.parseDouble(coordinates[1]);
+        double latitude = Double.parseDouble(coordinates[0])*2*PI/360;
+        double longitude = Double.parseDouble(coordinates[1])*2*PI/360;
         double x = EARTH_RADIUS * cos(latitude) * cos(longitude);
         double y = EARTH_RADIUS * cos(latitude) * sin(longitude);
         double z = EARTH_RADIUS * sin(latitude);

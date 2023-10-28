@@ -3,7 +3,7 @@ server:
 
 spring:
   r2dbc:
-    url: r2dbc:pool:postgres://${DB_IP}:5432/snafu_db
+    url: r2dbc:pool:postgres://localhost:5432/snafu_db
     username: postgres
     password: postgres
   data:

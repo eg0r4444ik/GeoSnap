@@ -126,16 +126,16 @@ public class SatellitesService {
             Point normal = new Point(new CartesianCoordinates(point.getCoordinates().getX()*EARTH_RADIUS/R,
                     point.getCoordinates().getY()*EARTH_RADIUS/R,
                     point.getCoordinates().getZ()*EARTH_RADIUS/R));
-            if(Math.abs(getAngleBetweenVectors(point, normal, zone.getLeftTop()) - satellite.getViewAngle()) < 10e-6){
+            if(getAngleBetweenVectors(point, normal, zone.getLeftTop()) <= satellite.getViewAngle()/2){
                 leftTop = true;
             }
-            if(Math.abs(getAngleBetweenVectors(point, normal, zone.getLeftBottom()) - satellite.getViewAngle()) < 10e-6){
+            if(getAngleBetweenVectors(point, normal, zone.getLeftBottom()) <= satellite.getViewAngle()/2){
                 leftBottom = true;
             }
-            if(Math.abs(getAngleBetweenVectors(point, normal, zone.getRightTop()) - satellite.getViewAngle()) < 10e-6){
+            if(getAngleBetweenVectors(point, normal, zone.getRightTop()) <= satellite.getViewAngle()/2){
                 rightTop = true;
             }
-            if(Math.abs(getAngleBetweenVectors(point, normal, zone.getRightBottom()) - satellite.getViewAngle()) < 10e-6){
+            if(getAngleBetweenVectors(point, normal, zone.getRightBottom()) <= satellite.getViewAngle()/2){
                 rightBottom = true;
             }
         }
@@ -154,7 +154,7 @@ public class SatellitesService {
         return result;
     }
 
-    private Point getLastZonePoint(Zone zone, SatelliteEntity satellite){
+    public Point getLastZonePoint(Zone zone, SatelliteEntity satellite){
         boolean leftTop = false;
         boolean leftBottom = false;
         boolean rightTop = false;
@@ -167,25 +167,25 @@ public class SatellitesService {
                     point.getCoordinates().getY()*EARTH_RADIUS/R,
                     point.getCoordinates().getZ()*EARTH_RADIUS/R));
 
-            if(Math.abs(getAngleBetweenVectors(point, normal, zone.getLeftTop()) - satellite.getViewAngle()) < 10e-6){
+            if(getAngleBetweenVectors(point, normal, zone.getLeftTop()) <= satellite.getViewAngle()/2){
                 leftTop = true;
                 if(leftBottom && rightTop && rightBottom){
                     return point;
                 }
             }
-            if(Math.abs(getAngleBetweenVectors(point, normal, zone.getLeftBottom()) - satellite.getViewAngle()) < 10e-6){
+            if(getAngleBetweenVectors(point, normal, zone.getLeftBottom()) <= satellite.getViewAngle()/2){
                 leftBottom = true;
                 if(leftTop && rightTop && rightBottom){
                     return point;
                 }
             }
-            if(Math.abs(getAngleBetweenVectors(point, normal, zone.getRightTop()) - satellite.getViewAngle()) < 10e-6){
+            if(getAngleBetweenVectors(point, normal, zone.getRightTop()) <= satellite.getViewAngle()/2){
                 rightTop = true;
                 if(leftTop && leftBottom && rightBottom){
                     return point;
                 }
             }
-            if(Math.abs(getAngleBetweenVectors(point, normal, zone.getRightBottom()) - satellite.getViewAngle()) < 10e-6){
+            if(getAngleBetweenVectors(point, normal, zone.getRightBottom()) <= satellite.getViewAngle()/2){
                 rightBottom = true;
                 if(leftTop && leftBottom && rightTop){
                     return point;
@@ -216,5 +216,48 @@ public class SatellitesService {
         return false;
     }
 
-    // TODO Учесть вращение земли вокруг своей оси
+    public boolean possibilityAddedSatellite(SatelliteEntity satellite){
+        if(!canSatellitesCrush(satellite) && satellite.getDistanceToEarth() >= 200000){
+            return true;
+        }
+        return false;
+    }
+
+//    public List<Point> getPossibleZonesForSatellite(SatelliteEntity satellite){
+//        List<Point> result = new ArrayList<>();
+//        double l = satellite.getDistanceToEarth()*tan(satellite.getViewAngle()/2);
+//        double R = EARTH_RADIUS+satellite.getDistanceToEarth();
+//        double alpha = atan(l/(2*R));
+//        for(Point point : getSatelliteTrajectory(satellite)) {
+//
+//
+//            Point normal = new Point(new CartesianCoordinates(point.getCoordinates().getX() * EARTH_RADIUS / R,
+//                    point.getCoordinates().getY() * EARTH_RADIUS / R,
+//                    point.getCoordinates().getZ() * EARTH_RADIUS / R));
+//
+//        }
+//    }
+
+//    public List<List<Point>> getPossibleZones(){
+//        List<List<Point>> result = new ArrayList<>();
+//        for(SatelliteEntity satellite : getSatellites().toIterable()){
+//            result.add(getPossibleZonesForSatellite(satellite));
+//        }
+//        return result;
+//    }
+
+//    public List<List<String>> getLatLogCoords(List<List<Point>> points){
+//        List<List<String>> res = new ArrayList<>();
+//        for(List<Point> list : points){
+//            List<String> result = new ArrayList<>();
+//            for(Point point : list){
+//                double latitude = 1;
+//                double longitude = 1;
+//                result.add("[" + latitude + " " + longitude + "]");
+//            }
+//            res.add(result);
+//        }
+//
+//        return res;
+//    }
 }

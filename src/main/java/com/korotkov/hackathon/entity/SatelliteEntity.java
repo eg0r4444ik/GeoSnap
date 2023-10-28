@@ -12,7 +12,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @AllArgsConstructor
 @Table("satellites")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class SatelliteEntity{
+public class SatelliteEntity {
     @Id
     private Long id;
 
@@ -35,4 +35,6 @@ public class SatelliteEntity{
     @Column(value = "time_start")
 
     long timeStart;
+
+    String name;
 }

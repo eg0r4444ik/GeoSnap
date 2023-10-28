@@ -1,6 +1,5 @@
 package com.korotkov.hackathon.entity;
 
-
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
@@ -11,22 +10,22 @@ import org.springframework.data.relational.core.mapping.Table;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("zones")
+@Table("orders")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ZoneEntity {
+public class Order {
+
     @Id
-    int id;
+    long id;
 
-    @Column("left_top")
-    String leftTop;
+    @Column(value = "user_id")
+    long userId;
 
-    @Column("left_bottom")
-    String leftBottom;
+    int price;
 
-    @Column("right_top")
-    String rightTop;
+    @Column(value = "satellite_name")
+    String satelliteName;
 
-    @Column("right_bottom")
-    String rightBottom;
+    double north;
 
+    double east;
 }

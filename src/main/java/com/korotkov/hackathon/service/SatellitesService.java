@@ -1,17 +1,23 @@
 package com.korotkov.hackathon.service;
 
+import com.korotkov.hackathon.dto.response.SatelliteOrderResponse;
+import com.korotkov.hackathon.dto.response.SatelliteResponseDto;
 import com.korotkov.hackathon.entity.SatelliteEntity;
 import com.korotkov.hackathon.repository.SatellitesRepository;
 import com.korotkov.hackathon.util.Zone;
 import com.korotkov.hackathon.util.coordinatesUtil.CartesianCoordinates;
 import com.korotkov.hackathon.util.coordinatesUtil.Point;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
 import static java.lang.Math.*;
 
@@ -22,9 +28,12 @@ public class SatellitesService {
     private final SatellitesRepository satellitesRepository;
     private final int EARTH_RADIUS = 6378100;
 
+    private final ModelMapper modelMapper;
+
     @Autowired
-    public SatellitesService(SatellitesRepository satellitesRepository) {
+    public SatellitesService(SatellitesRepository satellitesRepository, ModelMapper modelMapper) {
         this.satellitesRepository = satellitesRepository;
+        this.modelMapper = modelMapper;
     }
 
 
@@ -35,6 +44,10 @@ public class SatellitesService {
     @Transactional
     public Mono<SatelliteEntity> save(SatelliteEntity satelliteEntity) {
         return satellitesRepository.save(satelliteEntity);
+    }
+
+    public Mono<SatelliteEntity> findByName(String name) {
+        return satellitesRepository.findByName(name);
     }
 
     // Возвращает точку, в которой в данный момент находится спутник
@@ -142,16 +155,15 @@ public class SatellitesService {
         return leftTop && leftBottom && rightTop && rightBottom;
     }
 
-    public List<SatelliteEntity> getSortedSatellites(Zone zone, List<SatelliteEntity> satellites){
-        List<SatelliteEntity> result = new ArrayList<>();
-        for(SatelliteEntity satellite : satellites){
-            if(doesSatelliteCoverArea(zone, satellite)){
-                result.add(satellite);
-            }
-        }
-
-        Collections.sort(result, (s1, s2) -> (int)(getTimeForOrder(zone, s1)-getTimeForOrder(zone, s2)));
-        return result;
+    public Flux<SatelliteOrderResponse> getSortedSatellites(Zone zone, Flux<SatelliteEntity> satellites) {
+        //.filter(d -> doesSatelliteCoverArea(zone,d))
+        return satellites
+                .map(satelliteEntity -> SatelliteOrderResponse.builder()
+                        .satelliteResponseDto(modelMapper.map(satelliteEntity, SatelliteResponseDto.class))
+                        .time(getTimeForOrder(zone, satelliteEntity))
+                        .price(new Random().nextInt(3, 5) * 1000)
+                        .build())
+                .sort(Comparator.comparingLong(SatelliteOrderResponse::getTime));
     }
 
     public Point getLastZonePoint(Zone zone, SatelliteEntity satellite){

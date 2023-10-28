@@ -1,6 +1,6 @@
 package com.korotkov.hackathon.rest;
 
-import com.korotkov.hackathon.dto.request.MapZoneRequestDto;
+import com.korotkov.hackathon.dto.request.BanMapZoneRequestDto;
 import com.korotkov.hackathon.dto.request.SatelliteRequestDto;
 import com.korotkov.hackathon.dto.response.MapZoneResponseDto;
 import com.korotkov.hackathon.dto.response.SatelliteResponseDto;
@@ -46,9 +46,12 @@ public class AdminController {
 
 
     @PostMapping("/map-zone")
-    public Mono<MapZoneEntity> saveMapZone(@RequestBody MapZoneRequestDto mapZone) {
-        return mapZoneService.save(modelMapper.map(mapZone, MapZoneEntity.class));
+    public Mono<MapZoneEntity> banZone(@RequestBody BanMapZoneRequestDto banMapZoneRequestDto) {
+        MapZoneEntity map = modelMapper.map(banMapZoneRequestDto, MapZoneEntity.class);
+
+        return mapZoneService.save(map, banMapZoneRequestDto.isAllowed());
     }
+
 
     @GetMapping("/map-zone/all")
     public Flux<MapZoneResponseDto> findAllMapZones() {

@@ -235,41 +235,55 @@ public class SatellitesService {
         return false;
     }
 
-//    public List<Point> getPossibleZonesForSatellite(SatelliteEntity satellite){
-//        List<Point> result = new ArrayList<>();
-//        double l = satellite.getDistanceToEarth()*tan(satellite.getViewAngle()/2);
-//        double R = EARTH_RADIUS+satellite.getDistanceToEarth();
-//        double alpha = atan(l/(2*R));
-//        for(Point point : getSatelliteTrajectory(satellite)) {
-//
-//
-//            Point normal = new Point(new CartesianCoordinates(point.getCoordinates().getX() * EARTH_RADIUS / R,
-//                    point.getCoordinates().getY() * EARTH_RADIUS / R,
-//                    point.getCoordinates().getZ() * EARTH_RADIUS / R));
-//
-//        }
-//    }
+    public List<String> getPossibleZonesForSatellite(SatelliteEntity satellite){
+        List<String> result = new ArrayList<>();
+        double l = satellite.getDistanceToEarth()*tan(satellite.getViewAngle()/2);
+        double R = EARTH_RADIUS+satellite.getDistanceToEarth();
+        double beta = atan(l/(2*R));
+        for(double alpha = 0; alpha <= 2*PI; alpha += 0.01){
+            Point point = new Point(new CartesianCoordinates(R * cos(satellite.getEarthToOrbitAngle()) * cos(alpha),
+                    R * sin(satellite.getEarthToOrbitAngle()) * cos(alpha),
+                    R * sin(alpha)));
+            Point normal = new Point(new CartesianCoordinates(point.getCoordinates().getX()*EARTH_RADIUS/R,
+                    point.getCoordinates().getY()*EARTH_RADIUS/R,
+                    point.getCoordinates().getZ()*EARTH_RADIUS/R));
 
-//    public List<List<Point>> getPossibleZones(){
-//        List<List<Point>> result = new ArrayList<>();
-//        for(SatelliteEntity satellite : getSatellites().toIterable()){
-//            result.add(getPossibleZonesForSatellite(satellite));
-//        }
-//        return result;
-//    }
+            String longitude = "";
+            if(alpha <= PI) {
+                longitude = alpha + " ";
+            }else{
+                longitude = (alpha-2*PI) + " ";
+            }
 
-//    public List<List<String>> getLatLogCoords(List<List<Point>> points){
-//        List<List<String>> res = new ArrayList<>();
-//        for(List<Point> list : points){
-//            List<String> result = new ArrayList<>();
-//            for(Point point : list){
-//                double latitude = 1;
-//                double longitude = 1;
-//                result.add("[" + latitude + " " + longitude + "]");
-//            }
-//            res.add(result);
-//        }
-//
-//        return res;
-//    }
+            double x = normal.getCoordinates().getX();
+            double y = normal.getCoordinates().getY();
+            double z = normal.getCoordinates().getZ();
+            double a = acos((x*x+z*z)/(sqrt(x*x+y*y+z*z)*sqrt(x*x+z*z)));
+            String latitude1 = "";
+            String latitude2 = "";
+            if(a+beta <= PI){
+                latitude1 = (a+beta)+ " ";
+            }else{
+                latitude1 = (a+beta-2*PI) + " ";
+            }
+            if(a-beta <= PI){
+                latitude2 = (a-beta)+ " ";
+            }else if(a-beta <= -PI){
+                latitude2 = (a-beta+2*PI) + " ";
+            }else{
+                latitude2 = (a-beta-2*PI) + " ";
+            }
+
+            result.add(latitude1 + latitude2 + longitude);
+        }
+        return result;
+    }
+
+    public List<List<String>> getPossibleZones(){
+        List<List<String>> result = new ArrayList<>();
+        for(SatelliteEntity satellite : getSatellites().toIterable()){
+            result.add(getPossibleZonesForSatellite(satellite));
+        }
+        return result;
+    }
 }

@@ -181,6 +181,8 @@ public class SatellitesService {
             sss += str.charAt(i);
         }
 
+        // для больших заказов скидка
+
         return Integer.parseInt(sss);
     }
 

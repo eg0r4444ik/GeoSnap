@@ -126,8 +126,6 @@ public class SatellitesService {
         double cos = (x1 * x2 + y1 * y2 + z1 * z2) / (Math.sqrt(x1 * x1 + y1 * y1 + z1 * z1) * Math.sqrt(x2 * x2 + y2 * y2 + z2 * z2));
         return acos(cos);
     }
-
-    // TODO оптимизировать метод
     public boolean doesSatelliteCoverArea(Zone zone, SatelliteEntity satellite) {
         boolean leftTop = false;
         boolean leftBottom = false;
@@ -216,7 +214,4 @@ public class SatellitesService {
         return new Random().nextLong(1_706_415_739, 1_738_038_139);
     }
 
-
-    // TODO Посмотреть не столкнуться ли спутники
-    // TODO Учесть вращение земли вокруг своей оси
 }
